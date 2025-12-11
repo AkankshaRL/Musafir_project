@@ -1,0 +1,34 @@
+{
+  "file_id": "bdf093d1-bede-493b-8211-409cc3a62d2e",
+  "filename": "travel.jpg",
+  "type": "static",
+  "timestamp": "2025-12-11T18:38:28.082716",
+  "preprocessing": {
+    "preprocessing": "successful",
+    "steps": [
+      "grayscale",
+      "denoise",
+      "threshold"
+    ],
+    "processed_path": "C:\\Users\\Client\\AppData\\Local\\Temp\\tmphvhutj9q.png",
+    "original_size": "982x612",
+    "processed_size": "982x612"
+  },
+  "ocr": {
+    "page": 0,
+    "text": "C:\\Users\\Client\\AppData\\Local\\Temp\\tmphvhutj9q.png     min general   \"Book flight Delhee to Ajman oni next Friday night for 4 men and 2 female minor\" Your system must parse and convert this into structured search parameters. Expected Extracted Elements Element Value Extracted Origin Delhi (normalize misspelling \"Delhee\") Destination Ajman Travel Date Next Friday (convert to YYYY-MM-DD if system date is available; else return extracted concept) Time Preference Night Passenger 4 adult males, 2 female minors Breakdown Total Pax 6 Trip Type One-way (default unless return-date detected)",
+    "boxes": [],
+    "total_boxes": 0
+  },
+  "entities": {
+    "origin": "Delhee",
+    "destination": "Ajman",
+    "route": "Delhee-Ajman",
+    "passengers": {
+      "adult_male": 4,
+      "adult_female": 2,
+      "minor_female": 2,
+      "total": 8
+    }
+  }
+}

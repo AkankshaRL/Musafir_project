@@ -1,0 +1,118 @@
+1. Approach
+This system combines OCR preprocessing, PaddleOCR, and regex-based NLP extraction to convert unstructured images or videos into searchable structured data.
+Pipeline Overview
+Preprocessing (OpenCV)
+Convert to grayscale
+Denoise using Non-Local Means
+Adaptive thresholding
+Resize small images for better OCR accuracy
+
+OCR Extraction (PaddleOCR)
+For static images: ocr.ocr(processed_image)
+For dynamic content (GIF/MP4):
+Extract frames at fixed FPS
+Apply OCR per frame
+Merge text + entities across frames
+
+NLP Entity Extraction
+Custom regex-based extraction of:
+Dates
+Amounts
+Names
+PNR / Booking IDs
+Flight route (“Delhi to Ajman”)
+Passenger breakdown (adult male/female, minors)
+
+Structured Storage
+Each OCR result is stored as:
+
+extracted_data[file_id] = {
+    "ocr": {...},
+    "entities": {...}
+}
+
+
+Rule-Based Q&A Engine
+Queries like:
+
+“How many adult male?”
+“What is the destination?”
+“How many minors?”
+are answered by scanning the extracted structured entities.
+
+Flight Query Parser
+A separate NLP module converts natural English booking sentences into:
+origin
+destination
+travel date
+time preference
+passenger counts
+
+2. Assumptions
+PaddleOCR v2.x is installed and compatible with the environment.
+Images contain readable printed or typed text.
+Passenger sentences follow a predictable pattern
+(e.g., “4 men and 2 female minor”).
+Flight queries follow conversational English patterns
+(“Book flight X to Y next Friday night for 2 adults…”).
+User asks questions related to known entities extracted from the same file.
+Processing is done in-memory (not persisted to DB).
+
+3. Limitations
+OCR Limitations
+Low-quality, blurred, or handwritten text may produce empty OCR results.
+Thresholding can sometimes distort lightly colored text.
+Dynamic GIFs/MP4 accuracy depends on frame quality.
+
+NLP Limitations
+Regex-based extraction cannot handle complex language variations.
+No semantic understanding (e.g., “I want to fly tomorrow evening”).
+Names extraction weak unless format is strict (“Name: John Doe”).
+Route extraction fails if cities are not separated by “to”.
+
+System Limitations
+No persistence (data lost on restart).
+No user authentication.
+No inference caching.
+No support for multi-page PDFs (unless added).
+
+4. Next Steps (Recommended Enhancements)
+ 1. Add Embeddings + Vector Search for Q&A
+Replace rule-based Q&A with semantic search using:
+Sentence-BERT
+OpenAI embeddings
+FAISS / ChromaDB
+
+2. Replace Regex with ML-Based NER Models
+
+Use spaCy, HuggingFace models, or custom fine-tuned transformers.
+
+3. Improve OCR Robustness
+
+Add Tesseract fallback
+
+Use document layout detection
+
+Add auto-rotation correction
+
+4. Add a Database Layer
+
+Store extracted data + logs in:
+
+MongoDB / PostgreSQL
+
+Include history of questions & answers
+
+5. Build a Web UI
+
+Upload → View OCR → Ask Questions → Get Answers
+(using Next.js or Streamlit)
+
+6. Improve Flight NLP Parser
+Support:
+round trip
+return dates
+multi-city extraction
+international date formats
+pricing extraction
+
