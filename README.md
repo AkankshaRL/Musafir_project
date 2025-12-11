@@ -11,5 +11,4 @@
 - Flight route
 - Passenger counts (adult male/female, minors)
 - Handle Q&A queries about extracted content
-
-Parse flight booking queries into structured parameters
+- Parse flight booking queries into structured parameters
